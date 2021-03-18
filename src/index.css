@@ -1,0 +1,45 @@
+
+.isCompleted {
+    text-decoration: line-through;
+    color: grey;
+}
+
+ol {
+    list-style-type: none;
+}
+ .list {
+    width: 700px;
+    margin-bottom: 20px;
+}
+
+button {
+    height: 40px;
+    width: 60px;
+}
+
+div > button {
+    float: right;
+    margin-left: 10px;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    height: 50px;
+    background: lightgray;
+    color: white;
+}
+
+.nav-links {
+    width: 50%;
+    display: flex;
+    align-items: center;
+    list-style: none;
+    color: white;
+}
+
+li {
+    width: 50px;
+    margin-left: 30px;
+}
