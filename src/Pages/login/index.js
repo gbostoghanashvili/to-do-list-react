@@ -2,7 +2,6 @@ import React from 'react';
 import axios from 'axios';
 import { useHistory } from 'react-router';
 import { Button, ButtonGroup, TextField } from '@material-ui/core';
-import { withRouter } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 import { presentAlert } from '../../redux/actions';
@@ -13,6 +12,7 @@ const Login = () => {
 
 	const classes = useStyles();
 	const dispatch = useDispatch();
+
 	const emailRef = React.createRef();
 	const passwordRef = React.createRef();
 	const history = useHistory();
@@ -68,4 +68,4 @@ const Login = () => {
 	);
 };
 
-export default withRouter(Login);
+export default Login;

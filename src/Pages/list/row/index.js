@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { useRouteMatch } from 'react-router-dom';
 import { Button, TextField, Checkbox, Typography } from '@material-ui/core';
 
 import { removeTask, editTask, presentAlert } from '../../../redux/actions';
@@ -11,24 +11,24 @@ import { enableEnter } from '../../../functions/functions';
 const Row = (props) => {
 	const classes = useStyles();
 	const dispatch = useDispatch();
+	const match = useRouteMatch('/tasks/:id');
 
 	const [editMode, setEditMode] = useState(false);
 	const editInputRef = React.createRef();
-	const {id} = props.match.params;
+	const {id} = match.params;
 	const {row} = props;
 	const {isCompleted} = row;
 	const {Fragment} = React;
 
-	const deleteTask = (taskId) => {
-		return axios.post(`http://localhost:4000/tasks/remove/${id}`, {id: taskId}).then(() => {
-			dispatch(removeTask(taskId));
+	const deleteTask = (task) => {
+		return axios.post(`http://localhost:4000/tasks/remove/${id}`, {id: task.id}).then(() => {
+			dispatch(removeTask(task.id));
 		}).catch((err) => {
 			dispatch(presentAlert(err.message));
 		});
 	};
 
 	const saveTask = (task) => {
-
 		if (editInputRef.current.value.trim() !== '') {
 			return axios.post(`http://localhost:4000/tasks/edit/${id}`, {
 				id: task.id,
@@ -47,7 +47,7 @@ const Row = (props) => {
 
 	const changeCompletionStatus = (task) => {
 		return axios.post(`http://localhost:4000/tasks/check/${id}`, {
-			id: task.id,
+			id: task._id,
 			isCompleted: !task.isCompleted
 		}).then(() => {
 			task.isCompleted = !task.isCompleted;
@@ -95,7 +95,7 @@ const Row = (props) => {
 						<Button
 							className={classes.button}
 							variant="contained"
-							onClick={() => deleteTask(row.id)}
+							onClick={() => deleteTask(row)}
 						>Delete</Button>
 						<Button
 							variant="contained"
@@ -107,4 +107,4 @@ const Row = (props) => {
 	);
 };
 
-export default (withRouter(Row));
+export default Row;

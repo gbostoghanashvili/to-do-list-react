@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import { withRouter } from 'react-router-dom';
+import { useRouteMatch } from 'react-router-dom';
 import { Button, TextField } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 
@@ -9,9 +9,10 @@ import { presentAlert } from '../../../redux/actions';
 import { useStyles } from './styles';
 import { generateID, enableEnter } from '../../../functions/functions';
 
-const Input = (props) => {
+const Input = () => {
 	const dispatch = useDispatch();
 	const classes = useStyles();
+	const match = useRouteMatch('/tasks/:id')
 	const inputRef = React.createRef();
 
 	const appendTask = () => {
@@ -24,14 +25,15 @@ const Input = (props) => {
 		};
 
 		if (inputRef.current.value.trim() !== '') {
-			const {id} = props.match.params;
+			const {id} = match.params;
 			inputRef.current.value = '';
 
 			axios.post(`http://localhost:4000/tasks/${id}`, {
 				title: task.title,
-				checked: task.isCompleted,
+				isCompleted: task.isCompleted,
 				id: task.id,
-				date: task.date
+				date: task.date,
+				userId: id,
 			}).then(() => {
 				dispatch(addTask(task));
 
@@ -62,4 +64,4 @@ const Input = (props) => {
 		</div>
 	);
 };
-export default withRouter(Input);
+export default Input;
