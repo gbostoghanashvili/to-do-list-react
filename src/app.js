@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import Tasks from '../tasks/tasks';
-import Auth from '../auth/auth';
-import SignUp from '../signup/signUp';
+import Tasks from './Pages/list/tasks';
+import Login from './Pages/login';
+import SignUp from './Pages/signup';
 import { CssBaseline } from '@material-ui/core';
 
 
@@ -15,7 +15,7 @@ class App extends Component {
 				<CssBaseline/>
 				<Switch>
 					<Route path='/tasks/:id' component={Tasks}/>
-					<Route path='/auth' exact component={Auth}/>
+					<Route path='/' exact component={Login}/>
 					<Route path='/signup' exact component={SignUp}/>
 				</Switch>
 			</Router>

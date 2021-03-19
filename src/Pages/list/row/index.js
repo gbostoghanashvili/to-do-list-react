@@ -1,34 +1,23 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useDispatch } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { Button, TextField, Checkbox, Typography } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import { removeTask, editTask } from '../redux/actions';
-import { useDispatch } from 'react-redux';
-import { presentAlert } from '../redux/actions';
 
-const useStyles = makeStyles({
-	button: {
-		marginLeft: 10,
-	},
-
-	container: {
-		height: 40,
-	},
-
-	input: {
-		maxLength: 70,
-	}
-});
+import { removeTask, editTask, presentAlert } from '../../../redux/actions';
+import { useStyles } from './styles';
+import { enableEnter } from '../../../functions/functions';
 
 const Row = (props) => {
 	const classes = useStyles();
+	const dispatch = useDispatch();
+
 	const [editMode, setEditMode] = useState(false);
 	const editInputRef = React.createRef();
 	const {id} = props.match.params;
 	const {row} = props;
-	const dispatch = useDispatch();
-	const {isCompleted} = props.row;
+	const {isCompleted} = row;
+	const {Fragment} = React;
 
 	const deleteTask = (taskId) => {
 		return axios.post(`http://localhost:4000/tasks/remove/${id}`, {id: taskId}).then(() => {
@@ -38,7 +27,8 @@ const Row = (props) => {
 		});
 	};
 
-	const saveTask = (task, isCompleted) => {
+	const saveTask = (task) => {
+
 		if (editInputRef.current.value.trim() !== '') {
 			return axios.post(`http://localhost:4000/tasks/edit/${id}`, {
 				id: task.id,
@@ -67,15 +57,9 @@ const Row = (props) => {
 		});
 	};
 
-	const enableEnter = (e, task) => {
-		if (e.keyCode === 13) {
-			saveTask(task);
-		}
-	};
-
-
 	return (
-		<li className={'list'}>
+		<li
+			className={'list'}>
 			{editMode ?
 				(<React.Fragment>
 						<div className={classes.container}>
@@ -85,7 +69,7 @@ const Row = (props) => {
 								defaultValue={row.title}
 								inputRef={editInputRef}
 								size='small'
-								onKeyDown={(e) => enableEnter(e, row)}/>
+								onKeyDown={(e) => enableEnter(e, () => saveTask(row))}/>
 							<Button
 								className={classes.button}
 								variant="contained"
@@ -97,8 +81,9 @@ const Row = (props) => {
 						</div>
 					</React.Fragment>
 				) :
-				<React.Fragment>
-					<div className={classes.container}>
+				<Fragment>
+					<div
+						className={classes.container}>
 						<Checkbox
 							color="primary"
 							defaultChecked={!!isCompleted}
@@ -117,7 +102,7 @@ const Row = (props) => {
 							onClick={() => setEditMode(!editMode)}
 						>Edit</Button>
 					</div>
-				</React.Fragment>}
+				</Fragment>}
 		</li>
 	);
 };

@@ -1,12 +1,15 @@
 import React from 'react';
 import CloseIcon from '@material-ui/icons/Close';
 import { useDispatch, useSelector } from 'react-redux';
-import { hideAlert } from '../redux/actions';
 import { Snackbar, IconButton } from '@material-ui/core';
 
-const AlertMessage = () => {
-	const alertState = useSelector(state => state.alertReducer);
+import { hideAlert } from '../../redux/actions';
+import {alertSelector} from '../../redux/selectors';
+
+const Alert = () => {
+	const alertState = useSelector(alertSelector);
 	const dispatch = useDispatch();
+	const {Fragment} = React
 
 	return (
 		<div>
@@ -18,21 +21,20 @@ const AlertMessage = () => {
 						onClose={() => dispatch(hideAlert())}
 						message={alertState.message}
 						action={
-							<React.Fragment>
+							<Fragment>
 								<IconButton size="small"
 								            aria-label="close"
 								            color="inherit"
 								            onClick={() => dispatch(hideAlert())}>
 									<CloseIcon fontSize="small"/>
 								</IconButton>
-							</React.Fragment>
+							</Fragment>
 						}/>
 				) : (<h1 hidden={true}>123</h1>)
 			}
 		</div>
 	);
-
 };
 
 
-export default AlertMessage;
+export default Alert;

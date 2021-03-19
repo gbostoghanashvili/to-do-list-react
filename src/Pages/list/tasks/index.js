@@ -2,43 +2,21 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { presentAlert, showTasks } from '../redux/actions';
-import { makeStyles } from '@material-ui/core/styles';
 import { Typography, List, Button } from '@material-ui/core';
-import Input from '../input/Input';
-import TasksPagination from '../pagination/pagination';
-import Row from '../row/row';
-import AlertMessage from '../alertMessage/alertMessage';
 import { useHistory } from 'react-router';
 
-const useStyles = makeStyles({
-	container: {
-		display: 'flex',
-		flexDirection: 'column',
-		alignItems: 'center'
-	},
-
-	typo: {
-		marginTop: 50,
-	},
-
-	list: {
-		listStyle: 'none',
-	},
-
-	button: {
-		marginRight: 10,
-	}
-
-});
-
-const generateID = () => {
-	return Math.random().toString(36).substr(2, 9);
-};
+import Input from '../input';
+import TasksPagination from '../pagination';
+import Row from '../row';
+import Alert from '../../../Components/AlertMessage';
+import { useStyles } from './styles';
+import { generateID } from '../../../functions/functions';
+import { presentAlert, showTasks } from '../../../redux/actions';
+import {tasksSelector} from '../../../redux/selectors';
 
 const Tasks = (props) => {
 	const classes = useStyles();
-	const tasks = useSelector(state => state.taskReducer);
+	const tasks = useSelector(tasksSelector);
 	const dispatch = useDispatch();
 	const history = useHistory();
 
@@ -62,7 +40,6 @@ const Tasks = (props) => {
 		});
 	};
 
-
 	const paginate = (pageNumber) => {
 		setCurrentPage(pageNumber);
 	};
@@ -78,10 +55,11 @@ const Tasks = (props) => {
 
 	return (
 		<div>
-			<Button className={classes.button}
-			        onClick={() => history.push('/auth')}>Logout</Button>
+			<Button
+				className={classes.button}
+				onClick={() => history.push('/')}>Logout</Button>
 			<div className={classes.container}>
-				<AlertMessage/>
+				<Alert/>
 				<Typography
 					className={classes.typo}
 					variant="h3"
@@ -90,7 +68,9 @@ const Tasks = (props) => {
 					gutterBottom
 				>Tasks</Typography>
 				<Input/>
-				<List className={classes.list}>{rows}</List>
+				<List
+					className={classes.list}>{rows}
+				</List>
 				<div>
 					<TasksPagination
 						tasksPerPage={tasksPerPage}
