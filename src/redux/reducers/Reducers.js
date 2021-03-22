@@ -1,14 +1,14 @@
 export const taskReducer = (state = [], action) => {
 	switch (action.type) {
 		case 'show':
-			return action.payload;
+			return action.payload.reverse();
 		case 'add':
 			return [action.payload, ...state];
 		case 'remove':
-			return [...state].filter(task => task.id !== action.payload);
+			return [...state].filter(task => task._id !== action.payload);
 		case 'edit':
 			return [...state].map(task => {
-				if (task.id === action.payload.id) {
+				if (task._id === action.payload._id) {
 					task.title = action.payload.title;
 					task.isCompleted = action.payload.isCompleted;
 				}

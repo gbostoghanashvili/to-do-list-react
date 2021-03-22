@@ -33,37 +33,33 @@ const SignUp = () => {
 		const passwordInputValue = passwordRef.current.value.trim();
 		const confPasswordInputValue = confirmPasswordRef.current.value.trim();
 
-		axios.get('http://localhost:4000/').then(res => {
-			const emails = res.data.map(task => task.email);
-			if (emails.includes(emailInputValue)) {
-				dispatch(presentAlert('Email address is already registered'));
-			} else {
-				if (nameInputValue !== '' &&
-					emailInputValue !== '' &&
-					passwordInputValue !== '' &&
-					confPasswordInputValue !== '') {
+			if (nameInputValue !== '' &&
+				emailInputValue !== '' &&
+				passwordInputValue !== '' &&
+				confPasswordInputValue !== '') {
 
-					if (passwordInputValue === confPasswordInputValue) {
+				if (passwordInputValue === confPasswordInputValue) {
 
-						axios.post('http://localhost:4000/signup', {
-							name: nameInputValue,
-							email: emailInputValue,
-							password: passwordInputValue
-						}).then(() => {
-							history.push('/');
-						}).catch((err) => {
-							dispatch(presentAlert(err.message));
-						});
-						clearFields();
-					} else {
-						dispatch(presentAlert('Passwords do not match'));
-					}
+					axios.post('http://localhost:4000/signup', {
+						name: nameInputValue,
+						email: emailInputValue,
+						password: passwordInputValue
+					}).then((res) => {
+						dispatch(presentAlert(res.data));
+					}).catch((err) => {
+						dispatch(presentAlert(err.message));
+					});
+					clearFields();
 				} else {
-					dispatch(presentAlert('Empty input'));
+					dispatch(presentAlert('Passwords do not match'));
 				}
+			} else {
+				dispatch(presentAlert('Empty input'));
 			}
-		});
-	};
+
+
+	}
+
 
 	return (
 		<div>

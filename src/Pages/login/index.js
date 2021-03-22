@@ -17,21 +17,40 @@ const Login = () => {
 	const passwordRef = React.createRef();
 	const history = useHistory();
 
-	const logUserIn = () => {
 
-		axios.get('http://localhost:4000/').then(res => {
-			const user = res.data.find(user => user.email === emailRef.current.value
-				&& user.password === passwordRef.current.value);
-			if (user !== undefined) {
-				history.push(`/tasks/${user._id}`);
-			} else {
-				dispatch(presentAlert('user does not exist'));
-			}
-			return user;
-		}).catch((err) => {
-			dispatch(presentAlert(err.message));
-		});
+	const logUserIn = () => {
+		const email = emailRef.current.value
+		const password = passwordRef.current.value
+
+		axios.post('http://localhost:4000/', {email, password})
+		.then(response => {
+			history.push(`/tasks/${response.data}`)
+		})
+		.catch(err => dispatch(presentAlert(err.message)));
+
 	};
+
+	// const logUserIn = () => {
+	// 	const email = emailRef.current.value
+	// 	const password = passwordRef.current.value
+	//
+	// 	axios.post('http://localhost:4000/', {})
+	// 	.then(response => console.log(response.data))
+	// 	.catch(err => dispatch(presentAlert(err.message)));
+
+		// axios.get('http://localhost:4000/').then(res => {
+		// 	const user = res.data.find(user => user.email === emailRef.current.value
+		// 		&& user.password === passwordRef.current.value);
+		// 	if (user !== undefined) {
+		// 		history.push(`/tasks/${user._id}`);
+		// 	} else {
+		// 		dispatch(presentAlert('user does not exist'));
+		// 	}
+		// 	return user;
+		// }).catch((err) => {
+		// 	dispatch(presentAlert(err.message));
+		// });
+	// };
 
 	return (
 		<div className={classes.container}>

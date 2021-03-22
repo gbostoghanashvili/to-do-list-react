@@ -26,17 +26,15 @@ const Input = () => {
 
 		if (inputRef.current.value.trim() !== '') {
 			const {id} = match.params;
-			inputRef.current.value = '';
 
 			axios.post(`http://localhost:4000/tasks/${id}`, {
 				title: task.title,
 				isCompleted: task.isCompleted,
 				id: task.id,
-				date: task.date,
 				userId: id,
-			}).then(() => {
+			}).then((res) => {
+				task.id = res.data._id
 				dispatch(addTask(task));
-
 			}).catch((err) => {
 				dispatch(presentAlert(err.message));
 			});
@@ -44,12 +42,13 @@ const Input = () => {
 		} else {
 			dispatch(presentAlert('Empty input'));
 		}
+		inputRef.current.value = '';
 	};
 
 	return (
 		<div>
 			<TextField
-				className={classes.input}
+				inputProps={{maxLength: 70}}
 				id='outlined-basic'
 				label='Add Task'
 				variant='outlined'

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
-import { useRouteMatch } from 'react-router-dom';
 import { Button, TextField, Checkbox, Typography } from '@material-ui/core';
 
 import { removeTask, editTask, presentAlert } from '../../../redux/actions';
@@ -11,18 +10,16 @@ import { enableEnter } from '../../../functions/functions';
 const Row = (props) => {
 	const classes = useStyles();
 	const dispatch = useDispatch();
-	const match = useRouteMatch('/tasks/:id');
 
 	const [editMode, setEditMode] = useState(false);
 	const editInputRef = React.createRef();
-	const {id} = match.params;
 	const {row} = props;
 	const {isCompleted} = row;
 	const {Fragment} = React;
 
 	const deleteTask = (task) => {
-		return axios.post(`http://localhost:4000/tasks/remove/${id}`, {id: task.id}).then(() => {
-			dispatch(removeTask(task.id));
+		return axios.post(`http://localhost:4000/tasks/remove/${task._id}`).then(() => {
+			dispatch(removeTask(task._id));
 		}).catch((err) => {
 			dispatch(presentAlert(err.message));
 		});
@@ -30,8 +27,7 @@ const Row = (props) => {
 
 	const saveTask = (task) => {
 		if (editInputRef.current.value.trim() !== '') {
-			return axios.post(`http://localhost:4000/tasks/edit/${id}`, {
-				id: task.id,
+			return axios.post(`http://localhost:4000/tasks/edit/${task._id}`, {
 				title: editInputRef.current.value
 			}).then(() => {
 				task.title = editInputRef.current.value;
@@ -46,8 +42,7 @@ const Row = (props) => {
 	};
 
 	const changeCompletionStatus = (task) => {
-		return axios.post(`http://localhost:4000/tasks/check/${id}`, {
-			id: task._id,
+		return axios.post(`http://localhost:4000/tasks/check/${task._id}`, {
 			isCompleted: !task.isCompleted
 		}).then(() => {
 			task.isCompleted = !task.isCompleted;
@@ -61,10 +56,10 @@ const Row = (props) => {
 		<li
 			className={'list'}>
 			{editMode ?
-				(<React.Fragment>
+				(<Fragment>
 						<div className={classes.container}>
 							<TextField
-								className={classes.input}
+								inputProps={{maxLength: 70}}
 								id="standard"
 								defaultValue={row.title}
 								inputRef={editInputRef}
@@ -79,7 +74,7 @@ const Row = (props) => {
 							        onClick={() => saveTask(row)}
 							>Save</Button>
 						</div>
-					</React.Fragment>
+					</Fragment>
 				) :
 				<Fragment>
 					<div

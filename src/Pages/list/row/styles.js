@@ -8,8 +8,4 @@ export const useStyles = makeStyles({
 	container: {
 		height: 40,
 	},
-
-	input: {
-		maxLength: 70,
-	}
 });
