@@ -18,8 +18,6 @@ const Login = () => {
 	const history = useHistory();
 
 
-
-
 	const logUserIn = () => {
 		const email = emailRef.current.value
 		const password = passwordRef.current.value

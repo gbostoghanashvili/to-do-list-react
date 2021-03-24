@@ -60,6 +60,11 @@ const Tasks = () => {
 		setCurrentPage(pageNumber);
 	};
 
+	const logUserOut = () => {
+		localStorage.clear()
+		history.push('/')
+	}
+
 	const rows = currentTasks.map((row) => {
 		return (
 			<Row
@@ -73,7 +78,7 @@ const Tasks = () => {
 		<div>
 			<Button
 				className={classes.button}
-				onClick={() => history.push('/')}>Logout</Button>
+				onClick={() => logUserOut()}>Logout</Button>
 			<div className={classes.container}>
 				<Alert/>
 				<Typography

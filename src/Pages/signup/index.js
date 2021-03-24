@@ -33,10 +33,10 @@ const SignUp = () => {
 		const passwordInputValue = passwordRef.current.value.trim();
 		const confPasswordInputValue = confirmPasswordRef.current.value.trim();
 
-			if (nameInputValue !== '' &&
-				emailInputValue !== '' &&
-				passwordInputValue !== '' &&
-				confPasswordInputValue !== '') {
+			if (nameInputValue &&
+				emailInputValue &&
+				passwordInputValue &&
+				confPasswordInputValue ) {
 
 				if (passwordInputValue === confPasswordInputValue) {
 
