@@ -30,8 +30,22 @@ const Tasks = () => {
 	const currentTasks = tasks.slice(indexOfFirstTask, indexOfLastTask);
 
 	useEffect(() => {
-		setTasks();
+		checkToken()
 	}, []);
+
+	const checkToken = () => {
+		const token = localStorage.getItem('token')
+
+		axios.post('http://localhost:4000/check', {}, {headers:{'Authorization':`Bearer ${token}`}})
+		.then(res => {
+			if(res.data) {
+				setTasks();
+			} else {
+				history.push('/')
+			}
+		})
+		.catch()
+	}
 
 	const setTasks = () => {
 		const {id} = match.params;

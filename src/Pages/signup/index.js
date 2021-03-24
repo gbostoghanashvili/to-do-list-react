@@ -45,10 +45,12 @@ const SignUp = () => {
 						email: emailInputValue,
 						password: passwordInputValue
 					}).then((res) => {
-						dispatch(presentAlert(res.data));
+						if (res.status !== 404) {
+							history.push('/')
+						}
 					}).catch((err) => {
-						dispatch(presentAlert(err.message));
-					});
+						dispatch(presentAlert(err.response.data));
+					})
 					clearFields();
 				} else {
 					dispatch(presentAlert('Passwords do not match'));
@@ -56,8 +58,6 @@ const SignUp = () => {
 			} else {
 				dispatch(presentAlert('Empty input'));
 			}
-
-
 	}
 
 

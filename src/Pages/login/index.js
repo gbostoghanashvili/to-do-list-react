@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import axios from 'axios';
 import { useHistory } from 'react-router';
 import { Button, ButtonGroup, TextField } from '@material-ui/core';
@@ -18,39 +18,22 @@ const Login = () => {
 	const history = useHistory();
 
 
+
+
 	const logUserIn = () => {
 		const email = emailRef.current.value
 		const password = passwordRef.current.value
 
 		axios.post('http://localhost:4000/', {email, password})
 		.then(response => {
-			history.push(`/tasks/${response.data}`)
+			const {id, token} = response.data
+			history.push(`/tasks/${id}`)
+			localStorage.setItem("token", token)
 		})
-		.catch(err => dispatch(presentAlert(err.message)));
-
+		.catch(err => {
+			dispatch(presentAlert(err.response.data));
+		});
 	};
-
-	// const logUserIn = () => {
-	// 	const email = emailRef.current.value
-	// 	const password = passwordRef.current.value
-	//
-	// 	axios.post('http://localhost:4000/', {})
-	// 	.then(response => console.log(response.data))
-	// 	.catch(err => dispatch(presentAlert(err.message)));
-
-		// axios.get('http://localhost:4000/').then(res => {
-		// 	const user = res.data.find(user => user.email === emailRef.current.value
-		// 		&& user.password === passwordRef.current.value);
-		// 	if (user !== undefined) {
-		// 		history.push(`/tasks/${user._id}`);
-		// 	} else {
-		// 		dispatch(presentAlert('user does not exist'));
-		// 	}
-		// 	return user;
-		// }).catch((err) => {
-		// 	dispatch(presentAlert(err.message));
-		// });
-	// };
 
 	return (
 		<div className={classes.container}>

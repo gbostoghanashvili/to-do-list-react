@@ -8,7 +8,7 @@ export const taskReducer = (state = [], action) => {
 			return [...state].filter(task => task._id !== action.payload);
 		case 'edit':
 			return [...state].map(task => {
-				if (task._id === action.payload._id) {
+				if (task.id === action.payload._id) {
 					task.title = action.payload.title;
 					task.isCompleted = action.payload.isCompleted;
 				}

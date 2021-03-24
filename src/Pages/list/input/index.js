@@ -33,7 +33,7 @@ const Input = () => {
 				id: task.id,
 				userId: id,
 			}).then((res) => {
-				task.id = res.data._id
+				task._id = res.data._id
 				dispatch(addTask(task));
 			}).catch((err) => {
 				dispatch(presentAlert(err.message));
