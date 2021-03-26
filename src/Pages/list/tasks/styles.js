@@ -17,6 +17,11 @@ export const useStyles = makeStyles({
 
 	button: {
 		marginRight: 10,
+	},
+
+	countLabel: {
+		alignContent: 'left',
+		marginLeft: 10,
 	}
 
 });

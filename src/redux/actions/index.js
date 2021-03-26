@@ -26,6 +26,24 @@ export const editTask = (task) => {
 	};
 };
 
+export const checkAll = () => {
+	return {
+		type: 'checkAll',
+	};
+};
+
+export const uncheckAll = () => {
+	return {
+		type: 'uncheckAll'
+	};
+};
+
+export const deleteSelected = () => {
+	return {
+		type: 'deleteSelected'
+	};
+};
+
 export const presentAlert = (message) => {
 	return {
 		type: 'isPresented',
@@ -36,5 +54,13 @@ export const presentAlert = (message) => {
 export const hideAlert = () => {
 	return {
 		type: 'isHidden',
+	};
+};
+
+export const setCompletedTasks = (all, count) => {
+	return {
+		type: 'set',
+		all: all,
+		count: count
 	};
 };

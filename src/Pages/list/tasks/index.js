@@ -12,12 +12,13 @@ import Alert from '../../../Components/AlertMessage';
 import { useStyles } from './styles';
 import { generateID } from '../../../functions/functions';
 import { presentAlert, showTasks } from '../../../redux/actions';
-import { tasksSelector } from '../../../redux/selectors';
+import { tasksSelector, completedTasksSelector } from '../../../redux/selectors';
 
 
 const Tasks = () => {
 	const classes = useStyles();
 	const tasks = useSelector(tasksSelector);
+	const completedTasks = useSelector(completedTasksSelector);
 	const dispatch = useDispatch();
 	const history = useHistory();
 	const match = useRouteMatch('/tasks/:id');
@@ -30,6 +31,7 @@ const Tasks = () => {
 	const currentTasks = tasks.slice(indexOfFirstTask, indexOfLastTask);
 
 	useEffect(() => {
+
 		checkToken()
 	}, []);
 
@@ -51,10 +53,13 @@ const Tasks = () => {
 		const {id} = match.params;
 		axios.get(`http://localhost:4000/tasks/${id}`).then(res => {
 			dispatch(showTasks(res.data));
+			// let count = res.data.filter(task => task.isCompleted === true).length
+			// dispatch(setCompletedTasks(res.data.length, count ))
 		}).catch((err) => {
 			dispatch(presentAlert(err.message));
 		});
 	};
+
 
 	const paginate = (pageNumber) => {
 		setCurrentPage(pageNumber);
@@ -79,8 +84,15 @@ const Tasks = () => {
 			<Button
 				className={classes.button}
 				onClick={() => logUserOut()}>Logout</Button>
+			<Typography
+				className={classes.countLabel}
+				variant="h6"
+				align={'left'}
+				color={'textPrimary'}
+				gutterBottom
+			>{`Selected Tasks: ${completedTasks.completedTasks}/${completedTasks.allTasks}`} </Typography>
 			<div className={classes.container}>
-				<Alert/>
+				<Alert setTasks ={setTasks}/>
 				<Typography
 					className={classes.typo}
 					variant="h3"

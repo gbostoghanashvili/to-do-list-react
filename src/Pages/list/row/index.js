@@ -3,9 +3,10 @@ import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { Button, TextField, Checkbox, Typography } from '@material-ui/core';
 
-import { removeTask, editTask, presentAlert } from '../../../redux/actions';
+import { removeTask, editTask, presentAlert} from '../../../redux/actions';
 import { useStyles } from './styles';
 import { enableEnter } from '../../../functions/functions';
+
 
 const Row = (props) => {
 	const classes = useStyles();
@@ -23,6 +24,7 @@ const Row = (props) => {
 		}).catch((err) => {
 			dispatch(presentAlert(err.message));
 		});
+
 	};
 
 	const saveTask = (task) => {
@@ -37,7 +39,7 @@ const Row = (props) => {
 				dispatch(presentAlert(err.message));
 			});
 		} else {
-			dispatch(presentAlert('Empty input'));
+			setEditMode(!editMode)
 		}
 	};
 

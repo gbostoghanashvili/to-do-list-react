@@ -1,5 +1,22 @@
+
 export const taskReducer = (state = [], action) => {
 	switch (action.type) {
+		case 'checkAll':
+			return [...state].map(task => {
+				if(task.isCompleted === false) {
+					task.isCompleted = true
+				}
+				return task
+		})
+		case 'uncheckAll':
+			return [...state].map(task => {
+				if(task.isCompleted === true) {
+					task.isCompleted = false
+				}
+				return task
+			})
+		case 'deleteSelected':
+			return [...state].filter(task => task.isCompleted !== true);
 		case 'show':
 			return action.payload.reverse();
 		case 'add':
@@ -19,12 +36,33 @@ export const taskReducer = (state = [], action) => {
 	}
 };
 
-const defaultState = {
+const defaultCompletedTasksState = {
+	allTasks: 0,
+	completedTasks: 0,
+}
+
+export const completedTasksReducer = (state = defaultCompletedTasksState, action) => {
+
+	switch (action.type) {
+		case 'set':
+			return {
+				allTasks: action.all,
+				completedTasks: action.count
+			}
+		default:
+			return defaultCompletedTasksState
+	}
+}
+
+
+
+
+const defaultAlertState = {
 	isPresented: false,
 	message: ''
 };
 
-export const alertReducer = (state = defaultState, action) => {
+export const alertReducer = (state = defaultAlertState, action) => {
 	switch (action.type) {
 		case 'isPresented':
 			return {
@@ -38,5 +76,6 @@ export const alertReducer = (state = defaultState, action) => {
 			};
 		default:
 			return state;
+		}
 	}
-};
+
