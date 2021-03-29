@@ -24,13 +24,15 @@ const Login = () => {
 
 	const checkToken = () => {
 		const token = localStorage.getItem('token');
+		const id = localStorage.getItem('id');
 
-		axios.post('http://localhost:4000/check', {}, {headers: {'Authorization': `Bearer ${token}`}}).then(res => {
-			if (res.data) {
-				const id = localStorage.getItem('id');
-				history.push(`/tasks/${id}`);
-			}
-		}).catch();
+		if (id !== null) {
+			axios.post('http://localhost:4000/check', {id: id}, {headers: {'Authorization': `Bearer ${token}`}}).then(res => {
+				if (res.data) {
+					history.push(`/tasks/${id}`);
+				}
+			}).catch();
+		}
 	};
 
 

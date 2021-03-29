@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import axios from 'axios';
 import { Button, TextField } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
@@ -17,6 +17,28 @@ const SignUp = () => {
 	const emailRef = React.createRef();
 	const passwordRef = React.createRef();
 	const confirmPasswordRef = React.createRef();
+
+	useEffect(() => {
+		checkToken();
+	}, []);
+
+
+	const checkToken = () => {
+		const token = localStorage.getItem('token');
+		const id = localStorage.getItem('id');
+
+		if (id !== null) {
+			axios.post('http://localhost:4000/check', {id: id}, {headers: {'Authorization': `Bearer ${token}`}}).then(res => {
+				if (res.data) {
+					history.push(`/tasks/${id}`);
+				} else {
+					history.push('/');
+				}
+			}).catch(err => {
+				dispatch(presentAlert(err.response.data));
+			});
+		}
+	};
 
 
 	const clearFields = () => {

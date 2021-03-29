@@ -28,7 +28,7 @@ const Input = ({tasks,completedTasks}) => {
 			id: generateID(),
 		};
 
-		if (inputRef.current.value.trim() !== '') {
+		if (inputRef.current.value.trim()) {
 			const {id} = match.params;
 
 			axios.post(`http://localhost:4000/tasks/${id}`, {
@@ -50,7 +50,7 @@ const Input = ({tasks,completedTasks}) => {
 		const {id} = match.params;
 
 		axios.post(`http://localhost:4000/tasks/checkAll/${id}`, {check: check}).then(() => {
-			check ? dispatch(checkAll()) : dispatch(uncheckAll());
+			dispatch(check ? checkAll() : uncheckAll())
 		}).catch((err) => {
 			dispatch(presentAlert(err.message));
 		});
@@ -77,21 +77,21 @@ const Input = ({tasks,completedTasks}) => {
 				variant='outlined'
 				inputRef={inputRef}
 				size='small'
-				onKeyDown={(e) => enableEnter(e, () => appendTask())}/>
+				onKeyDown={(e) => enableEnter(e, appendTask)}/>
 			<Button
 				className={classes.button}
 				variant='contained'
-				onClick={() => deleteChecked()}
+				onClick={deleteChecked}
 			>Delete Selected</Button>
 			<Button
 				className={classes.button}
 				variant='contained'
-				onClick={allTasksChecked ? () => changeCompStatus(false) : () => changeCompStatus(true)}
+				onClick={ () => changeCompStatus(!allTasksChecked) }
 			>{allTasksChecked ? 'uncheck all' : 'check all'}</Button>
 			<Button
 				className={classes.button}
 				variant='contained'
-				onClick={() => appendTask()}
+				onClick={ appendTask }
 			>Submit</Button>
 		</div>
 	);

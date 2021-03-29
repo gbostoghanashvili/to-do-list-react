@@ -27,7 +27,7 @@ const Row = (props) => {
 	};
 
 	const saveTask = (task) => {
-		if (editInputRef.current.value.trim() !== '') {
+		if (editInputRef.current.value.trim()) {
 			return axios.post(`http://localhost:4000/tasks/edit/${task._id}`, {
 				title: editInputRef.current.value
 			}).then(() => {
