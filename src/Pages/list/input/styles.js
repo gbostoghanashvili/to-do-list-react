@@ -3,7 +3,8 @@ import { makeStyles } from '@material-ui/core/styles';
 export const useStyles = makeStyles({
 	button: {
 		marginLeft: 10,
-		width: 80
+		width: 80,
+		fontSize: 12
 	},
 	input: {
 		width: 300,
