@@ -16,7 +16,7 @@ export const taskReducer = (state = [], action) => {
 				return task
 			})
 		case 'deleteSelected':
-			return [...state].filter(task => task.isCompleted !== true);
+			return [...state].filter(task => !task.isCompleted);
 		case 'show':
 			return action.payload.reverse();
 		case 'add':

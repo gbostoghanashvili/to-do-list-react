@@ -27,8 +27,8 @@ const SignUp = () => {
 		const token = localStorage.getItem('token');
 		const id = localStorage.getItem('id');
 
-		if (id !== null) {
-			axios.post('http://localhost:4000/check', {id: id}, {headers: {'Authorization': `Bearer ${token}`}}).then(res => {
+		if ( id ) {
+			axios.post('http://localhost:4000/check', {id}, {headers: {'Authorization': `Bearer ${token}`}}).then(res => {
 				if (res.data) {
 					history.push(`/tasks/${id}`);
 				} else {

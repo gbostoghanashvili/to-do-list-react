@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import CloseIcon from '@material-ui/icons/Close';
 import { useDispatch, useSelector } from 'react-redux';
 import { Snackbar, IconButton } from '@material-ui/core';
@@ -9,7 +9,6 @@ import {alertSelector} from '../../redux/selectors';
 const Alert = () => {
 	const alertState = useSelector(alertSelector);
 	const dispatch = useDispatch();
-	const {Fragment} = React
 
 	return (
 		<div>

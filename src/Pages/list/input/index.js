@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import axios from 'axios';
 import { useRouteMatch } from 'react-router-dom';
 import { Button, TextField } from '@material-ui/core';
-import { useDispatch, connect } from 'react-redux';
+import { connect } from 'react-redux';
 
 import { addTask, checkAll, uncheckAll, deleteSelected, presentAlert, setCompletedTasks } from '../../../redux/actions';
 import { useStyles } from './styles';
@@ -10,15 +10,14 @@ import { generateID, enableEnter } from '../../../functions/functions';
 import { tasksCompletionSelector, tasksSelector } from '../../../redux/selectors';
 
 
-const Input = ({tasks,completedTasks}) => {
-	const dispatch = useDispatch();
+const Input = ({tasks,completedTasks, add, alert, checkAll, deleteSelected, setCheckedTasksLabel}) => {
 	const classes = useStyles();
 	const match = useRouteMatch('/tasks/:id');
 	const inputRef = React.createRef();
 	const allTasksChecked = tasks.every(task => task.isCompleted);
 
 	useEffect(() => {
-		dispatch(setCompletedTasks(tasks.length, completedTasks.length));
+		setCheckedTasksLabel(tasks.length, completedTasks.length)
 	}, [tasks]);
 
 	const appendTask = () => {
@@ -30,17 +29,18 @@ const Input = ({tasks,completedTasks}) => {
 
 		if (inputRef.current.value.trim()) {
 			const {id} = match.params;
+			const	{title, isCompleted } = task
 
 			axios.post(`http://localhost:4000/tasks/${id}`, {
-				title: task.title,
-				isCompleted: task.isCompleted,
+				title: title,
+				isCompleted: isCompleted,
 				id: task.id,
 				userId: id,
 			}).then((res) => {
 				task._id = res.data._id;
-				dispatch(addTask(task));
+				add(task)
 			}).catch((err) => {
-				dispatch(presentAlert(err.message));
+				alert(err.message)
 			});
 		}
 		inputRef.current.value = '';
@@ -49,10 +49,10 @@ const Input = ({tasks,completedTasks}) => {
 	const changeCompStatus = (check) => {
 		const {id} = match.params;
 
-		axios.post(`http://localhost:4000/tasks/checkAll/${id}`, {check: check}).then(() => {
-			dispatch(check ? checkAll() : uncheckAll())
+		axios.post(`http://localhost:4000/tasks/checkAll/${id}`, {check}).then(() => {
+			checkAll(check)
 		}).catch((err) => {
-			dispatch(presentAlert(err.message));
+			alert(err.message)
 		});
 	};
 
@@ -60,9 +60,9 @@ const Input = ({tasks,completedTasks}) => {
 		const {id} = match.params;
 
 		axios.post(`http://localhost:4000/tasks/deleteChecked/${id}`).then(() => {
-			dispatch(deleteSelected());
+			deleteSelected()
 		}).catch((err) => {
-			dispatch(presentAlert(err.message));
+			alert(err.message)
 		});
 	};
 
@@ -97,11 +97,22 @@ const Input = ({tasks,completedTasks}) => {
 	);
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
 	return {
 		completedTasks: tasksCompletionSelector(state),
-		tasks: tasksSelector(state)
+		tasks: tasksSelector(state),
 	};
 };
 
-export default connect(mapStateToProps)(Input)
+const mapDispatchToProps = (dispatch) => {
+
+	return {
+		add : (task) => { dispatch(addTask(task)) },
+		alert : (message) => {dispatch(presentAlert(message)) },
+		checkAll : (check) => {dispatch(check ? checkAll() : uncheckAll()) },
+		deleteSelected : () => {dispatch(deleteSelected())},
+		setCheckedTasksLabel : (tasksCount, completedTasksCount) => {dispatch(setCompletedTasks(tasksCount, completedTasksCount))}
+	}
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Input)

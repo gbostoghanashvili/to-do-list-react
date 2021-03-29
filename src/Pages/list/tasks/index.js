@@ -38,7 +38,7 @@ const Tasks = () => {
 		const token = localStorage.getItem('token');
 		const {id} = match.params;
 
-		axios.post('http://localhost:4000/check', {id: id}, {headers: {'Authorization': `Bearer ${token}`}}).then(res => {
+		axios.post('http://localhost:4000/check', {id}, {headers: {'Authorization': `Bearer ${token}`}}).then(res => {
 			if (res.data) {
 				setTasks();
 			} else {
