@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import axios from 'axios';
 import { useHistory } from 'react-router';
 import { Button, ButtonGroup, TextField } from '@material-ui/core';
@@ -18,37 +18,32 @@ const Login = () => {
 	const history = useHistory();
 
 	useEffect(() => {
-		checkToken()
-	}, [])
+		checkToken();
+	}, []);
 
 
 	const checkToken = () => {
-		const token = localStorage.getItem('token')
+		const token = localStorage.getItem('token');
 
-		axios.post('http://localhost:4000/check', {}, {headers:{'Authorization':`Bearer ${token}`}})
-		.then(res => {
-			if(res.data) {
-				const id = localStorage.getItem('id')
-				history.push(`/tasks/${id}`)
-
+		axios.post('http://localhost:4000/check', {}, {headers: {'Authorization': `Bearer ${token}`}}).then(res => {
+			if (res.data) {
+				const id = localStorage.getItem('id');
+				history.push(`/tasks/${id}`);
 			}
-		})
-		.catch()
-	}
+		}).catch();
+	};
 
 
 	const logUserIn = () => {
-		const email = emailRef.current.value
-		const password = passwordRef.current.value
+		const email = emailRef.current.value;
+		const password = passwordRef.current.value;
 
-		axios.post('http://localhost:4000/', {email, password})
-		.then(response => {
-			const {id, token} = response.data
-			history.push(`/tasks/${id}`)
-			localStorage.setItem("token", token)
-			localStorage.setItem('id', id)
-		})
-		.catch(err => {
+		axios.post('http://localhost:4000/', {email, password}).then(response => {
+			const {id, token} = response.data;
+			history.push(`/tasks/${id}`);
+			localStorage.setItem('token', token);
+			localStorage.setItem('id', id);
+		}).catch(err => {
 			dispatch(presentAlert(err.response.data));
 		});
 	};

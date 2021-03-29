@@ -33,32 +33,32 @@ const SignUp = () => {
 		const passwordInputValue = passwordRef.current.value.trim();
 		const confPasswordInputValue = confirmPasswordRef.current.value.trim();
 
-			if (nameInputValue &&
-				emailInputValue &&
-				passwordInputValue &&
-				confPasswordInputValue ) {
+		if (nameInputValue &&
+			emailInputValue &&
+			passwordInputValue &&
+			confPasswordInputValue) {
 
-				if (passwordInputValue === confPasswordInputValue) {
+			if (passwordInputValue === confPasswordInputValue) {
 
-					axios.post('http://localhost:4000/signup', {
-						name: nameInputValue,
-						email: emailInputValue,
-						password: passwordInputValue
-					}).then((res) => {
-						if (res.status !== 404) {
-							history.push('/')
-						}
-					}).catch((err) => {
-						dispatch(presentAlert(err.response.data));
-					})
-					clearFields();
-				} else {
-					dispatch(presentAlert('Passwords do not match'));
-				}
+				axios.post('http://localhost:4000/signup', {
+					name: nameInputValue,
+					email: emailInputValue,
+					password: passwordInputValue
+				}).then((res) => {
+					if (res.status !== 404) {
+						history.push('/');
+					}
+				}).catch((err) => {
+					dispatch(presentAlert(err.response.data));
+				});
+				clearFields();
 			} else {
-				dispatch(presentAlert('Empty input'));
+				dispatch(presentAlert('Passwords do not match'));
 			}
-	}
+		} else {
+			dispatch(presentAlert('Empty input'));
+		}
+	};
 
 
 	return (

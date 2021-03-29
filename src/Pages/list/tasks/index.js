@@ -31,23 +31,20 @@ const Tasks = () => {
 	const currentTasks = tasks.slice(indexOfFirstTask, indexOfLastTask);
 
 	useEffect(() => {
-
-		checkToken()
+		checkToken();
 	}, []);
 
 	const checkToken = () => {
-		const token = localStorage.getItem('token')
+		const token = localStorage.getItem('token');
 
-		axios.post('http://localhost:4000/check', {}, {headers:{'Authorization':`Bearer ${token}`}})
-		.then(res => {
-			if(res.data) {
+		axios.post('http://localhost:4000/check', {}, {headers: {'Authorization': `Bearer ${token}`}}).then(res => {
+			if (res.data) {
 				setTasks();
 			} else {
-				history.push('/')
+				history.push('/');
 			}
-		})
-		.catch()
-	}
+		}).catch();
+	};
 
 	const setTasks = () => {
 		const {id} = match.params;
@@ -64,9 +61,9 @@ const Tasks = () => {
 	};
 
 	const logUserOut = () => {
-		localStorage.clear()
-		history.push('/')
-	}
+		localStorage.clear();
+		history.push('/');
+	};
 
 	const rows = currentTasks.map((row) => {
 		return (
@@ -90,7 +87,7 @@ const Tasks = () => {
 				gutterBottom
 			>{`Selected Tasks: ${completedTasks.completedTasks}/${completedTasks.allTasks}`} </Typography>
 			<div className={classes.container}>
-				<Alert setTasks ={setTasks}/>
+				<Alert setTasks={setTasks}/>
 				<Typography
 					className={classes.typo}
 					variant="h3"

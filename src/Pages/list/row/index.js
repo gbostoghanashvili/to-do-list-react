@@ -24,7 +24,6 @@ const Row = (props) => {
 		}).catch((err) => {
 			dispatch(presentAlert(err.message));
 		});
-
 	};
 
 	const saveTask = (task) => {
