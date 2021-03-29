@@ -17,6 +17,25 @@ const Login = () => {
 	const passwordRef = React.createRef();
 	const history = useHistory();
 
+	useEffect(() => {
+		checkToken()
+	}, [])
+
+
+	const checkToken = () => {
+		const token = localStorage.getItem('token')
+
+		axios.post('http://localhost:4000/check', {}, {headers:{'Authorization':`Bearer ${token}`}})
+		.then(res => {
+			if(res.data) {
+				const id = localStorage.getItem('id')
+				history.push(`/tasks/${id}`)
+
+			}
+		})
+		.catch()
+	}
+
 
 	const logUserIn = () => {
 		const email = emailRef.current.value
@@ -27,6 +46,7 @@ const Login = () => {
 			const {id, token} = response.data
 			history.push(`/tasks/${id}`)
 			localStorage.setItem("token", token)
+			localStorage.setItem('id', id)
 		})
 		.catch(err => {
 			dispatch(presentAlert(err.response.data));

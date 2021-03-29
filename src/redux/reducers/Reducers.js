@@ -3,14 +3,14 @@ export const taskReducer = (state = [], action) => {
 	switch (action.type) {
 		case 'checkAll':
 			return [...state].map(task => {
-				if(task.isCompleted === false) {
+				if(!task.isCompleted) {
 					task.isCompleted = true
 				}
 				return task
 		})
 		case 'uncheckAll':
 			return [...state].map(task => {
-				if(task.isCompleted === true) {
+				if(task.isCompleted) {
 					task.isCompleted = false
 				}
 				return task

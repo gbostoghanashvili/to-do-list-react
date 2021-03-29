@@ -53,8 +53,6 @@ const Tasks = () => {
 		const {id} = match.params;
 		axios.get(`http://localhost:4000/tasks/${id}`).then(res => {
 			dispatch(showTasks(res.data));
-			// let count = res.data.filter(task => task.isCompleted === true).length
-			// dispatch(setCompletedTasks(res.data.length, count ))
 		}).catch((err) => {
 			dispatch(presentAlert(err.message));
 		});
