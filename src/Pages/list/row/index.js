@@ -18,7 +18,8 @@ const Row = (props) => {
 	const {isCompleted} = row;
 
 	const deleteTask = (task) => {
-		return axios.post(`http://localhost:4000/tasks/remove/${task._id}`).then(() => {
+		return axios.post(`http://localhost:4000/tasks/remove/${task._id}`)
+		.then(() => {
 			dispatch(removeTask(task._id));
 		}).catch((err) => {
 			dispatch(presentAlert(err.message));
@@ -79,7 +80,7 @@ const Row = (props) => {
 						className={classes.container}>
 						<Checkbox
 							color="primary"
-							defaultChecked={!!isCompleted}
+							defaultChecked={isCompleted}
 							onClick={() => changeCompletionStatus(row)}/>
 						<Typography
 							variant="caption"

@@ -10,14 +10,14 @@ import { generateID, enableEnter } from '../../../functions/functions';
 import { tasksCompletionSelector, tasksSelector } from '../../../redux/selectors';
 
 
-const Input = ({tasks,completedTasks, add, alert, checkAll, uncheckAll, deleteSelected, setCheckedTasksLabel}) => {
+const Input = ({tasks, completedTasksLength, add, alert, checkAll, uncheckAll, deleteSelected, setCheckedTasksLabel}) => {
 	const classes = useStyles();
 	const match = useRouteMatch('/tasks/:id');
 	const inputRef = React.createRef();
 	const allTasksChecked = tasks.every(task => task.isCompleted);
 
 	useEffect(() => {
-		setCheckedTasksLabel(tasks.length, completedTasks)
+		setCheckedTasksLabel(tasks.length, completedTasksLength)
 	}, [tasks]);
 
 	const appendTask = () => {
@@ -95,7 +95,7 @@ const Input = ({tasks,completedTasks, add, alert, checkAll, uncheckAll, deleteSe
 
 const mapStateToProps = (state) => {
 	return {
-		completedTasks: tasksCompletionSelector(state),
+		completedTasksLength: tasksCompletionSelector(state),
 		tasks: tasksSelector(state),
 	};
 };

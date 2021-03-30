@@ -14,6 +14,7 @@ import { generateID } from '../../../functions/functions';
 import { presentAlert, showTasks } from '../../../redux/actions';
 import { tasksSelector, completedTasksSelector } from '../../../redux/selectors';
 
+const tasksPerPage = 10
 
 const Tasks = () => {
 	const classes = useStyles();
@@ -24,7 +25,6 @@ const Tasks = () => {
 	const match = useRouteMatch('/tasks/:id');
 
 	const [currentPage, setCurrentPage] = useState(1);
-	const [tasksPerPage] = useState(10);
 
 	const indexOfLastTask = currentPage * tasksPerPage;
 	const indexOfFirstTask = indexOfLastTask - tasksPerPage;
@@ -38,7 +38,8 @@ const Tasks = () => {
 		const token = localStorage.getItem('token');
 		const {id} = match.params;
 
-		axios.post('http://localhost:4000/check', {id}, {headers: {'Authorization': `Bearer ${token}`}}).then(res => {
+		axios.post('http://localhost:4000/check', {id}, {headers: {'Authorization': `Bearer ${token}`}})
+		.then(res => {
 			if (res.data) {
 				setTasks();
 			} else {
@@ -52,16 +53,12 @@ const Tasks = () => {
 
 	const setTasks = () => {
 		const {id} = match.params;
-		axios.get(`http://localhost:4000/tasks/${id}`).then(res => {
+		axios.get(`http://localhost:4000/tasks/${id}`)
+		.then(res => {
 			dispatch(showTasks(res.data));
 		}).catch((err) => {
 			dispatch(presentAlert(err.message));
 		});
-	};
-
-
-	const paginate = (pageNumber) => {
-		setCurrentPage(pageNumber);
 	};
 
 	const logUserOut = () => {
@@ -82,7 +79,7 @@ const Tasks = () => {
 		<div>
 			<Button
 				className={classes.button}
-				onClick={() => logUserOut()}>Logout</Button>
+				onClick={logUserOut}>Logout</Button>
 			<Typography
 				className={classes.countLabel}
 				variant="h6"
@@ -107,7 +104,7 @@ const Tasks = () => {
 					<TasksPagination
 						tasksPerPage={tasksPerPage}
 						totalTasks={tasks.length}
-						paginate={paginate}/>
+						paginate={setCurrentPage}/>
 				</div>
 			</div>
 		</div>
