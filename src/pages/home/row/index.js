@@ -5,7 +5,7 @@ import { Button, TextField, Checkbox, Typography } from '@material-ui/core';
 
 import { removeTask, editTask, presentAlert} from '../../../redux/actions';
 import { useStyles } from './styles';
-import { enableEnter } from '../../../functions/functions';
+import { enableEnter } from '../../../functions';
 
 
 const Row = (props) => {

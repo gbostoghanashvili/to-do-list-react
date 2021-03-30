@@ -5,7 +5,7 @@ import { Button, ButtonGroup, TextField } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 
 import { presentAlert } from '../../redux/actions';
-import Alert from '../../Components/AlertMessage';
+import Alert from '../../components/alertMessage';
 import { useStyles } from './styles';
 
 const Login = () => {

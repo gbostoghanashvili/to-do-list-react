@@ -5,14 +5,14 @@ import { useRouteMatch } from 'react-router-dom';
 import { Typography, List, Button } from '@material-ui/core';
 import { useHistory } from 'react-router';
 
-import Input from '../input';
-import TasksPagination from '../pagination';
-import Row from '../row';
-import Alert from '../../../Components/AlertMessage';
+import Input from './input';
+import TasksPagination from './pagination';
+import Row from './row';
+import Alert from '../../components/alertMessage';
 import { useStyles } from './styles';
-import { generateID } from '../../../functions/functions';
-import { presentAlert, showTasks } from '../../../redux/actions';
-import { tasksSelector, completedTasksSelector } from '../../../redux/selectors';
+import { generateID } from '../../functions';
+import { presentAlert, showTasks } from '../../redux/actions';
+import { tasksSelector, completedTasksSelector } from '../../redux/selectors';
 
 const tasksPerPage = 10
 
@@ -33,6 +33,12 @@ const Tasks = () => {
 	useEffect(() => {
 		checkToken();
 	}, []);
+
+	useEffect(() => {
+		if( currentPage !== 1 && currentTasks.length === 0) {
+			setCurrentPage(currentPage - 1)
+		}
+	},[currentTasks])
 
 	const checkToken = () => {
 		const token = localStorage.getItem('token');

@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 
 import { presentAlert } from '../../redux/actions';
-import Alert from '../../Components/AlertMessage';
+import Alert from '../../components/alertMessage';
 import { useStyles } from './styles';
 
 const SignUp = () => {

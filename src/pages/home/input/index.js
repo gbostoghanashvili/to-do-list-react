@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 
 import { addTask, checkAll, uncheckAll, deleteSelected, presentAlert, setCompletedTasks } from '../../../redux/actions';
 import { useStyles } from './styles';
-import { generateID, enableEnter } from '../../../functions/functions';
+import { generateID, enableEnter } from '../../../functions';
 import { tasksCompletionSelector, tasksSelector } from '../../../redux/selectors';
 
 
