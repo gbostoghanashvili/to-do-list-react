@@ -28,7 +28,7 @@ const SignUp = () => {
 		const id = localStorage.getItem('id');
 
 		if ( id ) {
-			axios.post('http://localhost:4000/check', {id}, {headers: {'Authorization': `Bearer ${token}`}}).then(res => {
+			axios.post('http://localhost:4000/user/check', {id}, {headers: {'Authorization': `Bearer ${token}`}}).then(res => {
 				if (res.data) {
 					history.push(`/tasks/${id}`);
 				} else {
@@ -62,7 +62,7 @@ const SignUp = () => {
 
 			if (passwordInputValue === confPasswordInputValue) {
 
-				axios.post('http://localhost:4000/signup', {
+				axios.post('http://localhost:4000/user/signup', {
 					name: nameInputValue,
 					email: emailInputValue,
 					password: passwordInputValue

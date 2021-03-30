@@ -9,7 +9,6 @@ import { CssBaseline } from '@material-ui/core';
 class App extends Component {
 
 	render() {
-
 		return (
 			<Router>
 				<CssBaseline/>

@@ -27,7 +27,8 @@ const Login = () => {
 		const id = localStorage.getItem('id');
 
 		if (id) {
-			axios.post('http://localhost:4000/check', {id}, {headers: {'Authorization': `Bearer ${token}`}}).then(res => {
+			axios.post('http://localhost:4000/user/check', {id}, {headers: {'Authorization': `Bearer ${token}`}})
+			.then(res => {
 				if (res.data) {
 					history.push(`/tasks/${id}`);
 				}
@@ -40,7 +41,7 @@ const Login = () => {
 		const email = emailRef.current.value;
 		const password = passwordRef.current.value;
 
-		axios.post('http://localhost:4000/', {email, password}).then(response => {
+		axios.post('http://localhost:4000/user/', {email, password}).then(response => {
 			const {id, token} = response.data;
 			history.push(`/tasks/${id}`);
 			localStorage.setItem('token', token);
