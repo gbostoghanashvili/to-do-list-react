@@ -10,14 +10,14 @@ import { generateID, enableEnter } from '../../../functions/functions';
 import { tasksCompletionSelector, tasksSelector } from '../../../redux/selectors';
 
 
-const Input = ({tasks,completedTasks, add, alert, checkAll, deleteSelected, setCheckedTasksLabel}) => {
+const Input = ({tasks,completedTasks, add, alert, checkAll, uncheckAll, deleteSelected, setCheckedTasksLabel}) => {
 	const classes = useStyles();
 	const match = useRouteMatch('/tasks/:id');
 	const inputRef = React.createRef();
 	const allTasksChecked = tasks.every(task => task.isCompleted);
 
 	useEffect(() => {
-		setCheckedTasksLabel(tasks.length, completedTasks.length)
+		setCheckedTasksLabel(tasks.length, completedTasks)
 	}, [tasks]);
 
 	const appendTask = () => {
@@ -28,15 +28,11 @@ const Input = ({tasks,completedTasks, add, alert, checkAll, deleteSelected, setC
 		};
 
 		if (inputRef.current.value.trim()) {
-			const {id} = match.params;
-			const	{title, isCompleted } = task
+			const userId = match.params.id;
+			const	{title, isCompleted, id } = task
 
-			axios.post(`http://localhost:4000/tasks/${id}`, {
-				title: title,
-				isCompleted: isCompleted,
-				id: task.id,
-				userId: id,
-			}).then((res) => {
+			axios.post(`http://localhost:4000/tasks/${userId}`, { title, isCompleted, id, userId })
+				.then((res) => {
 				task._id = res.data._id;
 				add(task)
 			}).catch((err) => {
@@ -50,7 +46,7 @@ const Input = ({tasks,completedTasks, add, alert, checkAll, deleteSelected, setC
 		const {id} = match.params;
 
 		axios.post(`http://localhost:4000/tasks/checkAll/${id}`, {check}).then(() => {
-			checkAll(check)
+			check ? checkAll() : uncheckAll()
 		}).catch((err) => {
 			alert(err.message)
 		});
@@ -104,15 +100,13 @@ const mapStateToProps = (state) => {
 	};
 };
 
-const mapDispatchToProps = (dispatch) => {
-
-	return {
-		add : (task) => { dispatch(addTask(task)) },
-		alert : (message) => {dispatch(presentAlert(message)) },
-		checkAll : (check) => {dispatch(check ? checkAll() : uncheckAll()) },
-		deleteSelected : () => {dispatch(deleteSelected())},
-		setCheckedTasksLabel : (tasksCount, completedTasksCount) => {dispatch(setCompletedTasks(tasksCount, completedTasksCount))}
-	}
+const mapDispatchToProps = {
+		add : addTask,
+		alert : presentAlert,
+		checkAll : checkAll,
+		uncheckAll : uncheckAll,
+		deleteSelected : deleteSelected,
+		setCheckedTasksLabel : setCompletedTasks,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Input)

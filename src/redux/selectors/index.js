@@ -6,6 +6,6 @@ export const completedTasksSelector = (state => state.completedTasksReducer);
 
 
 export const tasksCompletionSelector = createSelector(
-	tasksSelector, (tasks) => tasks.filter(task => task.isCompleted)
+	tasksSelector, (tasks) => tasks.filter(task => task.isCompleted).length
 );
 

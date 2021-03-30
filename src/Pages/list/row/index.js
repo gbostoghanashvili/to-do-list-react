@@ -16,7 +16,6 @@ const Row = (props) => {
 	const editInputRef = React.createRef();
 	const {row} = props;
 	const {isCompleted} = row;
-	const {Fragment} = React;
 
 	const deleteTask = (task) => {
 		return axios.post(`http://localhost:4000/tasks/remove/${task._id}`).then(() => {
@@ -57,7 +56,7 @@ const Row = (props) => {
 		<li
 			className={'list'}>
 			{editMode ?
-				(<Fragment>
+				(
 						<div className={classes.container}>
 							<TextField
 								inputProps={{maxLength: 70}}
@@ -75,9 +74,7 @@ const Row = (props) => {
 							        onClick={() => saveTask(row)}
 							>Save</Button>
 						</div>
-					</Fragment>
 				) :
-				<Fragment>
 					<div
 						className={classes.container}>
 						<Checkbox
@@ -98,7 +95,7 @@ const Row = (props) => {
 							onClick={() => setEditMode(!editMode)}
 						>Edit</Button>
 					</div>
-				</Fragment>}
+				}
 		</li>
 	);
 };
