@@ -43,7 +43,9 @@ const Tasks = () => {
 	const checkToken = () => {
 		const token = localStorage.getItem('token');
 		const {id} = match.params;
-
+		if(!token) {
+			history.push('/');
+		}
 		axios.post('http://localhost:4000/user/check', {id}, {headers: {'Authorization': `Bearer ${token}`}})
 		.then(res => {
 			if (res.data) {
