@@ -1,37 +1,23 @@
 import { combineReducers } from 'redux';
+import {actionTypes} from '../actions';
 
 const taskReducer = (state = [], action) => {
 	switch (action.type) {
-		case 'checkAll':
-			return [...state].map(task => {
-				if (!task.isCompleted) {
-					task.isCompleted = true;
-				}
-				return task;
-			});
-		case 'uncheckAll':
-			return [...state].map(task => {
-				if (task.isCompleted) {
-					task.isCompleted = false;
-				}
-				return task;
-			});
-		case 'deleteSelected':
-			return [...state].filter(task => !task.isCompleted);
-		case 'show':
-			return action.payload.reverse();
-		case 'add':
+		case actionTypes.checkAll:
+			return state.map(task => !task.isCompleted ? {...task, isCompleted: true} : task)
+		case actionTypes.uncheckAll:
+			return state.map(task => task.isCompleted ? {...task, isCompleted: false} : task)
+		case actionTypes.deleteSelected:
+			return state.filter(task => !task.isCompleted);
+		case actionTypes.show:
+			return action.payload;
+		case actionTypes.add:
 			return [action.payload, ...state];
-		case 'remove':
-			return [...state].filter(task => task._id !== action.payload);
-		case 'edit':
-			return [...state].map(task => {
-				if (task.id === action.payload._id) {
-					task.title = action.payload.title;
-					task.isCompleted = action.payload.isCompleted;
-				}
-				return task;
-			});
+		case actionTypes.remove:
+			return state.filter(task => task._id !== action.payload);
+		case actionTypes.edit:
+		const {_id, title, isCompleted} = action.payload
+			return state.map(task => task.id === _id ? {...task, title, isCompleted} : task)
 		default:
 			return state;
 	}
@@ -45,7 +31,7 @@ const defaultCompletedTasksState = {
 const completedTasksReducer = (state = defaultCompletedTasksState, action) => {
 
 	switch (action.type) {
-		case 'set':
+		case actionTypes.set:
 			return {
 				allTasks: action.all,
 				completedTasks: action.count
@@ -63,12 +49,12 @@ const defaultAlertState = {
 
 const alertReducer = (state = defaultAlertState, action) => {
 	switch (action.type) {
-		case 'isPresented':
+		case actionTypes.isPresented:
 			return {
 				isPresented: true,
 				message: action.payload
 			};
-		case 'isHidden':
+		case actionTypes.isHidden:
 			return {
 				isPresented: false,
 				message: ''

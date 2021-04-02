@@ -1,65 +1,79 @@
+export const actionTypes = {
+	add: 'add',
+	show: 'show',
+	remove: 'remove',
+	edit: 'edit',
+	checkAll: 'checkAll',
+	uncheckAll: 'uncheckAll',
+	deleteSelected: 'deleteSelected',
+	isPresented: 'isPresented',
+	isHidden: 'isHidden',
+	set: 'set'
+
+}
+
 export const addTask = (task) => {
 	return {
-		type: 'add',
+		type: actionTypes.add,
 		payload: task
 	};
 };
 
 export const showTasks = (tasks) => {
 	return {
-		type: 'show',
+		type: actionTypes.show,
 		payload: tasks
 	};
 };
 
 export const removeTask = (id) => {
 	return {
-		type: 'remove',
+		type: actionTypes.remove,
 		payload: id
 	};
 };
 
 export const editTask = (task) => {
 	return {
-		type: 'edit',
+		type: actionTypes.edit,
 		payload: task
 	};
 };
 
 export const checkAll = () => {
 	return {
-		type: 'checkAll',
+		type: actionTypes.checkAll,
 	};
 };
 
 export const uncheckAll = () => {
 	return {
-		type: 'uncheckAll'
+		type: actionTypes.uncheckAll
 	};
 };
 
 export const deleteSelected = () => {
 	return {
-		type: 'deleteSelected'
+		type: actionTypes.deleteSelected
 	};
 };
 
 export const presentAlert = (message) => {
 	return {
-		type: 'isPresented',
+		type: actionTypes.isPresented,
 		payload: message
 	};
 };
 
 export const hideAlert = () => {
 	return {
-		type: 'isHidden',
+		type: actionTypes.isHidden,
 	};
 };
 
 export const setCompletedTasks = (all, count) => {
 	return {
-		type: 'set',
+		type: actionTypes.set,
 		all: all,
 		count: count
 	};
