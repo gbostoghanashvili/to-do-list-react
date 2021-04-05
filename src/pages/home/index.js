@@ -34,11 +34,9 @@ const Tasks = () => {
 		checkToken();
 	}, []);
 
-	useEffect(() => {
-		if( currentPage !== 1 && currentTasks.length === 0) {
+	if( currentPage !== 1 && currentTasks.length === 0) {
 			setCurrentPage(currentPage - 1)
-		}
-	},[currentTasks])
+	}
 
 	const checkToken = () => {
 		const token = localStorage.getItem('token');
@@ -57,7 +55,6 @@ const Tasks = () => {
 			dispatch(presentAlert(err.response.data));
 		});
 	};
-
 
 	const setTasks = () => {
 		const {id} = match.params;

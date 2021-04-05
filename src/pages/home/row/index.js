@@ -17,22 +17,22 @@ const Row = (props) => {
 	const {row} = props;
 	const {isCompleted} = row;
 
-	const deleteTask = (task) => {
-		return axios.post(`http://localhost:4000/tasks/remove/${task._id}`)
+	const deleteTask = () => {
+		return axios.post(`http://localhost:4000/tasks/remove/${row._id}`)
 		.then(() => {
-			dispatch(removeTask(task._id));
+			dispatch(removeTask(row._id));
 		}).catch((err) => {
 			dispatch(presentAlert(err.message));
 		});
 	};
 
-	const saveTask = (task) => {
+	const saveTask = () => {
 		if (editInputRef.current.value.trim()) {
-			return axios.post(`http://localhost:4000/tasks/edit/${task._id}`, {
+			return axios.post(`http://localhost:4000/tasks/edit/${row._id}`, {
 				title: editInputRef.current.value
 			}).then(() => {
-				task.title = editInputRef.current.value;
-				dispatch(editTask(task));
+				row.title = editInputRef.current.value;
+				dispatch(editTask(row));
 				setEditMode(!editMode);
 			}).catch((err) => {
 				dispatch(presentAlert(err.message));
@@ -42,12 +42,12 @@ const Row = (props) => {
 		}
 	};
 
-	const changeCompletionStatus = (task) => {
-		return axios.post(`http://localhost:4000/tasks/check/${task._id}`, {
-			isCompleted: !task.isCompleted
+	const changeCompletionStatus = () => {
+		return axios.post(`http://localhost:4000/tasks/check/${row._id}`, {
+			isCompleted: !row.isCompleted
 		}).then(() => {
-			task.isCompleted = !task.isCompleted;
-			dispatch(editTask(task));
+			row.isCompleted = !row.isCompleted;
+			dispatch(editTask(row));
 		}).catch((err) => {
 			dispatch(presentAlert(err.message));
 		});
@@ -65,14 +65,14 @@ const Row = (props) => {
 								defaultValue={row.title}
 								inputRef={editInputRef}
 								size='small'
-								onKeyDown={(e) => enableEnter(e, () => saveTask(row))}/>
+								onKeyDown={(e) => enableEnter(e, saveTask)}/>
 							<Button
 								className={classes.button}
 								variant="contained"
 								onClick={() => setEditMode(!editMode)}
 							>Cancel</Button>
 							<Button variant="contained"
-							        onClick={() => saveTask(row)}
+							        onClick={saveTask}
 							>Save</Button>
 						</div>
 				) :
@@ -81,7 +81,7 @@ const Row = (props) => {
 						<Checkbox
 							color="primary"
 							defaultChecked={isCompleted}
-							onClick={() => changeCompletionStatus(row)}/>
+							onClick={changeCompletionStatus}/>
 						<Typography
 							variant="caption"
 							className={`${isCompleted ? 'isCompleted' : ''}`}
@@ -89,7 +89,7 @@ const Row = (props) => {
 						<Button
 							className={classes.button}
 							variant="contained"
-							onClick={() => deleteTask(row)}
+							onClick={deleteTask}
 						>Delete</Button>
 						<Button
 							variant="contained"
